@@ -1,13 +1,11 @@
 <?php
 
+namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Product;
-
-
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 
 class OrderSeeder extends Seeder
 {
@@ -16,15 +14,29 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
-       $i = 0;
 
-while ($i < 10) {
-    Order::create([
-        'user_id' => User::inRandomOrder()->first()->id,
-        'product_id' => Product::inRandomOrder()->first()->id,
-        'price' => fake()->randomFloat(2, 100, 1000),
-    ]);
-    $i++;
-}
+
+    $users = User::all();
+    $products = Product::all();
+
+    if ($users->isEmpty() || $products->isEmpty()) {
+        $this->command->error('Users or Products table is empty');
+        return;
+    }
+
+
+
+
+
+        $i = 0;
+
+        while ($i < 10) {
+            Order::create([
+                'user_id' => User::inRandomOrder()->first()->id,
+                'product_id' => Product::inRandomOrder()->first()->id,
+                'price' => fake()->randomFloat(2, 100, 1000),
+            ]);
+            $i++;
+        }
     }
 }
