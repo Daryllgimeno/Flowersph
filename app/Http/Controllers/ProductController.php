@@ -10,11 +10,25 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index()
-    {
-        $products = Product::all();
-        return view('products.index', compact('products'));
+ public function index(Request $request)
+{    $sortOrder = $request->get('sort', 'asc');
+    $direction = $request->get('direction', 'desc');
+
+    if (!in_array($sortOrder, ['product_name', 'product_description', 'quantity', 'price'])) {
+        $sort = 'created_at';
     }
+
+    if (!in_array($direction, ['asc', 'desc'])) {
+        $direction = 'desc';
+    }
+
+    $products = Product::orderBy($sort, $direction)->get();
+return view('products.index', [
+        'products' => $products,
+        'sortOrder' => $sortOrder, // 👈 THIS LINE IS REQUIRED
+    ]);
+}
+
 
     /**
      * Show the form for creating a new resource.

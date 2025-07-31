@@ -1,39 +1,48 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Product</title>
-</head>
-<body>
-    <h1>Edit Product</h1>
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <h2 class="mb-4 text-center text-success">🌼 Edit Product</h2>
 
     @if ($errors->any())
-        <ul style="color:red;">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+        <div class="alert alert-danger">
+            <strong>There were some problems with your input:</strong>
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
-    <form action="{{ route('products.update', $product) }}" method="POST">
+    <form action="{{ route('products.update', $product) }}" method="POST" class="card p-4 shadow-sm border-0 bg-light">
         @csrf
         @method('PUT')
 
-        <label>Name:</label>
-        <input type="text" name="product_name" value="{{ old('product_name', $product->product_name) }}"><br><br>
+        <div class="mb-3">
+            <label class="form-label">Product Name</label>
+            <input type="text" name="product_name" class="form-control" value="{{ old('product_name', $product->product_name) }}">
+        </div>
 
-        <label>Description:</label>
-        <textarea name="product_description">{{ old('product_description', $product->product_description) }}</textarea><br><br>
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="product_description" class="form-control" rows="3">{{ old('product_description', $product->product_description) }}</textarea>
+        </div>
 
-        <label>Quantity:</label>
-        <input type="number" name="quantity" value="{{ old('quantity', $product->quantity) }}"><br><br>
+        <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" name="quantity" class="form-control" value="{{ old('quantity', $product->quantity) }}">
+        </div>
 
-        <label>Price:</label>
-        <input type="text" name="price" value="{{ old('price', $product->price) }}"><br><br>
+        <div class="mb-3">
+            <label class="form-label">Price</label>
+            <input type="text" name="price" class="form-control" value="{{ old('price', $product->price) }}">
+        </div>
 
-        <button type="submit">Update</button>
+        <div class="d-flex justify-content-between">
+            <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">← Back</a>
+            <button type="submit" class="btn btn-success">💾 Update Product</button>
+        </div>
     </form>
-
-    <br>
-    <a href="{{ route('products.index') }}">Back to Product List</a>
-</body>
-</html>
+</div>
+@endsection
